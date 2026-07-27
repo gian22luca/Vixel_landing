@@ -176,9 +176,9 @@
   .dev-card h3{color:var(--white);font-size:22px;margin-bottom:8px;}
   .dev-card .sub{color:var(--cyandark);font-size:13.5px;font-style:italic;margin-bottom:14px;}
   .dev-card p.desc{color:#C8D2EE;font-size:14.5px;margin-bottom:18px;}
-  .dev-card .spec-list li{color:#C8D2EE;}
-  .dev-card .spec-list li b{color:var(--white);}
-  .dev-card .spec-list li::before{background:var(--cyan);}
+  .dev-card .spec-list li,.dev-card .prod-list li{color:#C8D2EE;}
+  .dev-card .spec-list li b,.dev-card .prod-list li b{color:var(--white);}
+  .dev-card .spec-list li::before,.dev-card .prod-list li::before{background:var(--cyan);}
 
   /* ---------- CONTACTO ---------- */
   #contacto{background:var(--navy3);text-align:center;position:relative;overflow:hidden;}
