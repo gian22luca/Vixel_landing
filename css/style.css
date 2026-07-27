@@ -178,6 +178,7 @@
   .dev-card p.desc{color:#C8D2EE;font-size:14.5px;margin-bottom:18px;}
   .dev-card .spec-list li,.dev-card .prod-list li{color:#C8D2EE;}
   .dev-card .spec-list li b,.dev-card .prod-list li b{color:var(--white);}
+  .dev-card .spec-list li span{color:#C8D2EE;}
   .dev-card .spec-list li::before,.dev-card .prod-list li::before{background:var(--cyan);}
 
   /* ---------- CONTACTO ---------- */
@@ -195,7 +196,7 @@
   .contact-card .lbl{font-size:11.5px;font-weight:700;letter-spacing:1.5px;color:var(--cyan);text-transform:uppercase;margin-bottom:12px;display:block;}
   .contact-card .val{color:var(--white);font-size:15.5px;font-weight:600;word-break:break-word;}
   .contact-card .val small{display:block;font-weight:400;color:#AEBBDD;font-size:12.5px;margin-top:4px;}
-  .contact-loc{margin-top:44px;color:#7C8AB8;font-size:13.5px;}
+  .contact-loc{margin-top:76px;color:#7C8AB8;font-size:13.5px;}
 
   /* ---------- FOOTER ---------- */
   footer{background:var(--navy3);border-top:1px solid rgba(255,255,255,.08);padding:44px 0 30px;}
