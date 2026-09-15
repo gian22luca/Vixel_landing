@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de seguimiento — Vixel</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../images/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../js/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/app.css">
+<link rel="stylesheet" href="../css/panel.css">
+</head>
+<body class="app-body">
+
+<div class="app-topbar">
+  <div class="container">
+    <a href="/" class="logo"><img src="../images/logo.png" alt="VIXEL"></a>
+    <nav class="app-nav">
+      <a href="/panel/" class="active">Seguimiento</a>
+      <a href="/config/">Configuración</a>
+      <span class="app-user" id="app-user"></span>
+      <button class="linklike" id="logout-btn">Cerrar sesión</button>
+    </nav>
+  </div>
+</div>
+
+<div class="panel-shell">
+  <div id="device-selector"></div>
+
+  <div class="content-wrapper">
+    <div id="route-filter">
+      <h3>Filtro de Rutas</h3>
+      <label>
+        <input type="checkbox" id="show-ida" checked>
+        <span style="color:red;">●</span> IDA
+      </label>
+      <label>
+        <input type="checkbox" id="show-vuelta" checked>
+        <span style="color:blue;">●</span> VUELTA
+      </label>
+      <button id="center-gps-btn">📍 Centrar GPS</button>
+    </div>
+
+    <div class="map-container">
+      <div id="status">Esperando datos...</div>
+      <div id="map"></div>
+
+      <div id="data-meter">
+        <span class="dm-title">📡 SIM808 · Datos reales</span>
+        <div class="dm-item">
+          <span class="dm-icon">⬆️</span>
+          <div class="dm-info"><span class="dm-label">Enviado</span><span class="dm-value" id="dm-sent">--</span></div>
+        </div>
+        <div class="dm-item">
+          <span class="dm-icon">⬇️</span>
+          <div class="dm-info"><span class="dm-label">Recibido</span><span class="dm-value" id="dm-recv">--</span></div>
+        </div>
+        <div class="dm-item">
+          <span class="dm-icon">📊</span>
+          <div class="dm-info"><span class="dm-label">Total</span><span class="dm-value" id="dm-total">--</span></div>
+        </div>
+        <div class="dm-item">
+          <span class="dm-icon">🔄</span>
+          <div class="dm-info"><span class="dm-label">Envíos</span><span class="dm-value" id="dm-requests">--</span></div>
+        </div>
+        <div class="dm-item">
+          <span class="dm-icon">⚡</span>
+          <div class="dm-info"><span class="dm-label">Tasa</span><span class="dm-value" id="dm-rate">--</span></div>
+        </div>
+        <div class="dm-item">
+          <span class="dm-icon">🕐</span>
+          <div class="dm-info"><span class="dm-label">Uptime dispositivo</span><span class="dm-value" id="dm-uptime">--:--:--</span></div>
+        </div>
+        <div id="dm-bar-wrap"><div id="dm-bar"></div></div>
+      </div>
+    </div>
+
+    <div id="trip-panel">
+      <h3>Estadísticas</h3>
+      <div class="counters-row">
+        <div class="counter-box ida">
+          <div class="c-label">🔴 IDA</div>
+          <div class="c-num" id="count-ida">0</div>
+          <div class="c-sub">T2 → T1</div>
+        </div>
+        <div class="counter-box vuelta">
+          <div class="c-label">🔵 VUELTA</div>
+          <div class="c-num" id="count-vuelta">0</div>
+          <div class="c-sub">T1 → T2</div>
+        </div>
+      </div>
+      <hr class="trip-divider">
+      <div id="trip-badge" class="trip-badge badge-waiting">⏳ Esperando salida</div>
+      <div class="trip-row"><span class="label">Salida:</span><span class="value" id="stat-start">--:--:--</span></div>
+      <div class="trip-row"><span class="label">Llegada:</span><span class="value" id="stat-end">--:--:--</span></div>
+      <div class="trip-row"><span class="label">Tiempo:</span><span class="value" id="stat-elapsed">00:00:00</span></div>
+      <div class="trip-row"><span class="label">Vel. media:</span><span class="value" id="stat-speed">-- km/h</span></div>
+      <div class="trip-row"><span class="label">Distancia:</span><span class="value" id="stat-odometer">-- km</span></div>
+      <hr class="trip-divider">
+      <div class="distance-box normal" id="dist-box">
+        <div class="dist-label" id="dist-label">Distancia a ruta</div>
+        <span class="dist-value" id="stat-dist">--</span>
+        <span class="dist-unit">metros</span>
+      </div>
+      <div class="deviation-count-box ok" id="dev-count-box">
+        <span class="dev-label">Desvíos</span>
+        <span class="dev-num" id="stat-dev-count">0</span>
+      </div>
+      <div id="deviation-list"><p class="no-deviations">Sin desvíos registrados</p></div>
+      <button id="reset-trip-btn">🔄 Reiniciar</button>
+      <button id="history-btn">📋 Ver historial</button>
+    </div>
+  </div>
+</div>
+
+<div id="history-modal" class="modal-overlay" style="display:none">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2>📋 Historial de viajes</h2>
+      <button class="close-btn" id="close-history-btn">✕</button>
+    </div>
+    <div id="history-content"></div>
+    <div class="modal-footer">
+      <button id="clear-history-btn">🗑 Limpiar historial</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/vendor/leaflet/leaflet.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/panel.js"></script>
+</body>
+</html>

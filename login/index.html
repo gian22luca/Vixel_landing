@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingresar — Vixel</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../images/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body class="app-body">
+
+<div class="auth-screen">
+  <div class="auth-card reveal visible">
+    <a href="/" class="auth-logo"><img src="../images/logo-light.png" alt="VIXEL"></a>
+    <h1>Ingresar al panel</h1>
+    <p class="auth-sub">Seguimiento de flota y configuración remota.</p>
+
+    <form id="login-form">
+      <div class="field">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary auth-submit" id="login-btn">Ingresar</button>
+      <div id="login-error" class="auth-error" hidden></div>
+    </form>
+
+    <a href="/" class="auth-back">← Volver al sitio</a>
+  </div>
+</div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuración remota — Vixel</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../images/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body class="app-body">
+
+<div class="app-topbar">
+  <div class="container">
+    <a href="/" class="logo"><img src="../images/logo.png" alt="VIXEL"></a>
+    <nav class="app-nav">
+      <a href="/panel/">Seguimiento</a>
+      <a href="/config/" class="active">Configuración</a>
+      <span class="app-user" id="app-user"></span>
+      <button class="linklike" id="logout-btn">Cerrar sesión</button>
+    </nav>
+  </div>
+</div>
+
+<div class="app-main" style="max-width:640px;">
+  <div class="app-card">
+    <h2>Dispositivo</h2>
+    <p class="app-card-sub">Elegí la unidad a configurar.</p>
+    <div class="field">
+      <label for="dispositivo-select">Unidad</label>
+      <select id="dispositivo-select"></select>
+    </div>
+  </div>
+
+  <div class="app-card">
+    <h2>Parámetros del dispositivo</h2>
+    <p class="app-card-sub">Los cambios se aplican en el dispositivo en menos de 60 segundos.</p>
+
+    <div id="config-alert" class="app-alert info">Cargando...</div>
+
+    <form id="config-form" hidden>
+      <div class="field">
+        <label for="volumen">Volumen del audio (0-30)</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="range" id="volumen" min="0" max="30" value="20" style="flex:1;">
+          <span id="volumen-valor" style="min-width:24px;text-align:right;font-weight:600;color:var(--cyandark);">20</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="texto">Texto por defecto en pantalla</label>
+        <input type="text" id="texto" maxlength="64" placeholder="LINEA 102 - VIXEL">
+      </div>
+      <div class="field">
+        <label for="radio">Radio de detección de parada (metros)</label>
+        <input type="number" id="radio" min="5" max="200" value="30">
+      </div>
+      <div class="field">
+        <label for="intervalo">Intervalo de subida de datos (segundos)</label>
+        <input type="number" id="intervalo" min="15" max="600" value="15">
+      </div>
+      <button type="submit" class="btn btn-primary" id="guardar-btn">Guardar cambios</button>
+    </form>
+  </div>
+</div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/config.js"></script>
+</body>
+</html>
