@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" href="../images/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../js/vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/app.css">
 <link rel="stylesheet" href="../css/gestion.css">
@@ -31,6 +32,46 @@
 
   <div id="no-admin-alert" class="app-alert error" hidden>
     Esta sección es solo para usuarios con rol admin.
+  </div>
+
+  <div class="app-card">
+    <h2>Líneas</h2>
+    <p class="app-card-sub">Terminales y recorrido (ida/vuelta) de cada línea — se dibuja haciendo click en el mapa.</p>
+
+    <form id="linea-form" class="gestion-form">
+      <input type="hidden" id="linea-id">
+      <div class="gestion-form-row">
+        <div class="field" style="flex:2;"><label>Nombre de la línea</label><input type="text" id="linea-nombre" maxlength="100" required></div>
+        <div class="field"><label>Nombre Terminal 1</label><input type="text" id="linea-t1-nombre" maxlength="100" required></div>
+        <div class="field"><label>Nombre Terminal 2</label><input type="text" id="linea-t2-nombre" maxlength="100" required></div>
+        <div class="field"><label>Activa</label><input type="checkbox" id="linea-activa" checked style="width:auto;margin-top:11px;"></div>
+      </div>
+
+      <div class="linea-map-tools">
+        <button type="button" class="linea-mode-btn" data-mode="terminal1">📍 Marcar Terminal 1</button>
+        <button type="button" class="linea-mode-btn" data-mode="terminal2">📍 Marcar Terminal 2</button>
+        <button type="button" class="linea-mode-btn" data-mode="ida">🔴 Dibujar recorrido IDA</button>
+        <button type="button" class="linea-mode-btn" data-mode="vuelta">🔵 Dibujar recorrido VUELTA</button>
+        <button type="button" class="linea-map-btn" id="linea-undo-btn">↩ Deshacer último punto</button>
+        <button type="button" class="linea-map-btn" id="linea-clear-btn">🗑 Limpiar recorrido activo</button>
+      </div>
+      <p class="linea-map-hint" id="linea-map-hint">Elegí qué marcar y hacé click en el mapa.</p>
+      <div id="linea-map"></div>
+
+      <div class="gestion-form-row" style="margin-top:12px;">
+        <div class="field field-btns">
+          <button type="submit" class="btn btn-primary" id="linea-submit-btn">Agregar línea</button>
+          <button type="button" class="btn-cancel" id="linea-cancel-btn" hidden>Cancelar edición</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="linea-alert" class="app-alert" hidden></div>
+
+    <table class="gestion-table">
+      <thead><tr><th>Nombre</th><th>Terminal 1</th><th>Terminal 2</th><th>Puntos ida/vuelta</th><th>Activa</th><th></th></tr></thead>
+      <tbody id="lineas-tbody"><tr><td colspan="6" class="gestion-empty">Cargando...</td></tr></tbody>
+    </table>
   </div>
 
   <div class="app-card">
@@ -83,6 +124,7 @@
 
 </div>
 
+<script src="../js/vendor/leaflet/leaflet.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../js/gestion.js"></script>
 </body>
