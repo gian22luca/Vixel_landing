@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión — Vixel</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../images/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/app.css">
+<link rel="stylesheet" href="../css/gestion.css">
+</head>
+<body class="app-body">
+
+<div class="app-topbar">
+  <div class="container">
+    <a href="/" class="logo"><img src="../images/logo.png" alt="VIXEL"></a>
+    <nav class="app-nav">
+      <a href="/panel/">Seguimiento</a>
+      <a href="/gestion/" class="active">Gestión</a>
+      <a href="/config/">Configuración</a>
+      <span class="app-user" id="app-user"></span>
+      <button class="linklike" id="logout-btn">Cerrar sesión</button>
+    </nav>
+  </div>
+</div>
+
+<div class="app-main">
+
+  <div id="no-admin-alert" class="app-alert error" hidden>
+    Esta sección es solo para usuarios con rol admin.
+  </div>
+
+  <div class="app-card">
+    <h2>Paradas</h2>
+    <p class="app-card-sub">Recorrido de la Ramal A — nombre, orden, coordenadas, texto en pantalla y pista de audio.</p>
+
+    <form id="parada-form" class="gestion-form">
+      <input type="hidden" id="parada-id">
+      <div class="gestion-form-row">
+        <div class="field"><label>Orden</label><input type="number" id="parada-orden" min="1" required></div>
+        <div class="field" style="flex:2;"><label>Nombre</label><input type="text" id="parada-nombre" maxlength="100" required></div>
+        <div class="field"><label>Latitud</label><input type="text" id="parada-lat" inputmode="decimal" required></div>
+        <div class="field"><label>Longitud</label><input type="text" id="parada-lon" inputmode="decimal" required></div>
+      </div>
+      <div class="gestion-form-row">
+        <div class="field" style="flex:2;"><label>Texto en pantalla</label><input type="text" id="parada-texto" maxlength="64" required></div>
+        <div class="field"><label>Pista de audio</label><input type="text" id="parada-audio" placeholder="001.mp3" maxlength="10" required></div>
+        <div class="field field-btns">
+          <button type="submit" class="btn btn-primary" id="parada-submit-btn">Agregar</button>
+          <button type="button" class="btn-cancel" id="parada-cancel-btn" hidden>Cancelar edición</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="parada-alert" class="app-alert" hidden></div>
+
+    <table class="gestion-table">
+      <thead><tr><th>Orden</th><th>Nombre</th><th>Lat</th><th>Lon</th><th>Texto pantalla</th><th>Audio</th><th></th></tr></thead>
+      <tbody id="paradas-tbody"><tr><td colspan="7" class="gestion-empty">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="app-card">
+    <h2>Posiciones recientes</h2>
+    <p class="app-card-sub">Solo lectura — las carga el propio dispositivo, no se editan a mano.</p>
+    <table class="gestion-table">
+      <thead><tr><th>Dispositivo</th><th>Fecha/hora</th><th>Lat</th><th>Lon</th><th>HDOP</th></tr></thead>
+      <tbody id="posiciones-tbody"><tr><td colspan="5" class="gestion-empty">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="app-card">
+    <h2>Viajes</h2>
+    <p class="app-card-sub">Solo lectura — historial calculado por el sistema.</p>
+    <table class="gestion-table">
+      <thead><tr><th>Dispositivo</th><th>Dirección</th><th>Inicio</th><th>Fin</th><th>Distancia</th><th>Vel. media</th></tr></thead>
+      <tbody id="viajes-tbody"><tr><td colspan="6" class="gestion-empty">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/gestion.js"></script>
+</body>
+</html>
