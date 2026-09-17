@@ -47,6 +47,10 @@
     attribution: "© OpenStreetMap contributors",
   }).addTo(map);
 
+  // Valores de arranque — se pisan con lo que devuelva /api/lineas/ (ver
+  // cargarLinea() mas abajo) en cuanto responda. Quedan como fallback para
+  // no dejar el mapa vacio si todavia no se cargo ninguna Linea desde
+  // /gestion/, o si la llamada a la API falla.
   var terminal1 = [-34.64156342985639, -58.36911794252859];
   var terminal2 = [-34.57382497011297, -58.40973918613616];
 
@@ -116,8 +120,29 @@
     [-34.57273, -58.410959], [-34.573138, -58.410466], [-34.573567, -58.410101], [-34.573799, -58.409758],
   ];
 
-  var polylineIda = L.polyline(rutaIda, { color: "red", weight: 3, opacity: 0.7 }).addTo(map).bindPopup("Recorrido IDA");
-  var polylineVuelta = L.polyline(rutaVuelta, { color: "blue", weight: 3, opacity: 0.7 }).addTo(map).bindPopup("Recorrido VUELTA");
+  var polylineIda = null, polylineVuelta = null, terminal1Marker = null, terminal2Marker = null;
+
+  function drawRouteLayers() {
+    if (polylineIda) map.removeLayer(polylineIda);
+    if (polylineVuelta) map.removeLayer(polylineVuelta);
+    if (terminal1Marker) map.removeLayer(terminal1Marker);
+    if (terminal2Marker) map.removeLayer(terminal2Marker);
+
+    polylineIda = L.polyline(rutaIda, { color: "red", weight: 3, opacity: 0.7 }).addTo(map).bindPopup("Recorrido IDA");
+    polylineVuelta = L.polyline(rutaVuelta, { color: "blue", weight: 3, opacity: 0.7 }).addTo(map).bindPopup("Recorrido VUELTA");
+    if (!document.getElementById("show-ida").checked) map.removeLayer(polylineIda);
+    if (!document.getElementById("show-vuelta").checked) map.removeLayer(polylineVuelta);
+
+    terminal1Marker = L.marker(terminal1, {
+      icon: L.divIcon({ className: "terminal-marker", html: '<div style="background-color:green;width:20px;height:20px;border-radius:50%;border:3px solid white;"></div>', iconSize: [20, 20] }),
+    }).addTo(map).bindPopup("<b>Terminal 1</b><br>Inicio del recorrido");
+
+    terminal2Marker = L.marker(terminal2, {
+      icon: L.divIcon({ className: "terminal-marker", html: '<div style="background-color:darkred;width:20px;height:20px;border-radius:50%;border:3px solid white;"></div>', iconSize: [20, 20] }),
+    }).addTo(map).bindPopup("<b>Terminal 2</b><br>Fin del recorrido");
+  }
+
+  drawRouteLayers();
 
   document.getElementById("show-ida").addEventListener("change", function (e) {
     if (e.target.checked) map.addLayer(polylineIda); else map.removeLayer(polylineIda);
@@ -130,13 +155,26 @@
     if (pos) map.setView(pos, 15); else alert("Aún no hay datos de GPS disponibles");
   });
 
-  L.marker(terminal1, {
-    icon: L.divIcon({ className: "terminal-marker", html: '<div style="background-color:green;width:20px;height:20px;border-radius:50%;border:3px solid white;"></div>', iconSize: [20, 20] }),
-  }).addTo(map).bindPopup("<b>Terminal 1</b><br>Inicio del recorrido");
+  // Pisa terminal1/terminal2/rutaIda/rutaVuelta con la Linea activa cargada
+  // desde /gestion/, si existe. No bloquea el resto de la inicializacion:
+  // el mapa ya se dibuja con el fallback de arriba, y esto lo redibuja en
+  // cuanto responde (o lo deja como esta si no hay ninguna Linea todavia,
+  // o si la request falla).
+  function cargarLinea() {
+    VixelAuth.apiFetch("/api/lineas/").then(function (resp) {
+      return resp.ok ? resp.json() : [];
+    }).then(function (lineas) {
+      var linea = lineas.find(function (l) { return l.activa; }) || lineas[0];
+      if (!linea || linea.terminal1_lat == null || linea.terminal2_lat == null) return;
 
-  L.marker(terminal2, {
-    icon: L.divIcon({ className: "terminal-marker", html: '<div style="background-color:darkred;width:20px;height:20px;border-radius:50%;border:3px solid white;"></div>', iconSize: [20, 20] }),
-  }).addTo(map).bindPopup("<b>Terminal 2</b><br>Fin del recorrido");
+      terminal1 = [linea.terminal1_lat, linea.terminal1_lon];
+      terminal2 = [linea.terminal2_lat, linea.terminal2_lon];
+      if (linea.ruta_ida && linea.ruta_ida.length > 1) rutaIda = linea.ruta_ida;
+      if (linea.ruta_vuelta && linea.ruta_vuelta.length > 1) rutaVuelta = linea.ruta_vuelta;
+      drawRouteLayers();
+    }).catch(function () { /* se queda con el fallback hardcodeado */ });
+  }
+  cargarLinea();
 
   // ==================== SELECTOR DE DISPOSITIVOS ====================
   function renderDeviceSelector() {
