@@ -1,0 +1,86 @@
+/* Estilos de las paginas "app" (login, panel, config) - reusan las
+   variables de :root definidas en style.css, que se carga antes que este
+   archivo en cada pagina. */
+
+.app-body { background: var(--lightbg); }
+
+/* ---------- LOGIN ---------- */
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  padding: 24px;
+}
+.auth-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 44px 38px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.35);
+  text-align: center;
+}
+.auth-logo img { height: 30px; margin: 0 auto 28px; }
+.auth-card h1 { font-size: 24px; margin-bottom: 8px; }
+.auth-sub { font-size: 14px; color: var(--gray-light); margin-bottom: 28px; }
+.field { text-align: left; margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 13px; font-weight: 600; color: var(--navy);
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%; padding: 11px 14px; border-radius: 6px;
+  border: 1.5px solid #E1E5F0; font-size: 14.5px; font-family: 'Inter', sans-serif;
+  color: var(--navy);
+}
+.field input:focus { outline: none; border-color: var(--cyandark); }
+.auth-submit { width: 100%; justify-content: center; margin-top: 6px; }
+.auth-submit:disabled { opacity: .6; cursor: default; transform: none; }
+.auth-error {
+  margin-top: 14px; padding: 10px 12px; border-radius: 6px;
+  background: #FDECEA; color: #C0392B; font-size: 13px;
+}
+.auth-back {
+  display: inline-block; margin-top: 26px; font-size: 13px; color: var(--gray-light);
+}
+.auth-back:hover { color: var(--navy); }
+
+/* ---------- APP SHELL (panel / config) ---------- */
+.app-topbar {
+  background: var(--navy); padding: 14px 0; position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+.app-topbar .container { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.app-topbar .logo img { height: 26px; }
+.app-nav { display: flex; align-items: center; gap: 22px; }
+.app-nav a { color: var(--white); font-size: 14px; font-weight: 500; opacity: .85; }
+.app-nav a:hover, .app-nav a.active { opacity: 1; color: var(--cyan); }
+.app-nav .app-user { color: var(--gray-light); font-size: 13px; }
+.app-nav button.linklike {
+  background: none; border: none; color: var(--white); opacity: .85; font-size: 14px;
+  cursor: pointer; font-family: 'Inter', sans-serif; padding: 0;
+}
+.app-nav button.linklike:hover { opacity: 1; color: var(--cyan); }
+
+.app-main { max-width: 1180px; margin: 0 auto; padding: 32px 28px 60px; }
+.app-card {
+  background: var(--white); border-radius: 12px; padding: 26px 28px;
+  box-shadow: 0 4px 20px rgba(13,27,62,.08); margin-bottom: 24px;
+}
+.app-card h2 { font-size: 18px; margin-bottom: 4px; }
+.app-card .app-card-sub { font-size: 13px; color: var(--gray-light); margin-bottom: 20px; }
+
+.app-alert {
+  padding: 11px 14px; border-radius: 6px; font-size: 13.5px; margin-bottom: 18px;
+}
+.app-alert.ok { background: #E6F7EC; color: #1E7E34; }
+.app-alert.error { background: #FDECEA; color: #C0392B; }
+.app-alert.info { background: #EEF1FD; color: var(--navy); }
+
+@media (max-width: 700px) {
+  .app-topbar .container { flex-direction: column; gap: 10px; }
+  .app-nav { flex-wrap: wrap; justify-content: center; }
+  .app-main { padding: 20px 18px 40px; }
+}
