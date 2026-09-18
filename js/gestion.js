@@ -28,6 +28,38 @@
     return new Date(iso).toLocaleString("es-AR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
   }
 
+  // ==================== GEOCODING (Nominatim / OSM) ====================
+  // Mismo proveedor que ya usan los mapas de /panel/ y /gestion/. Solo se
+  // llama cuando el usuario aprieta "Buscar" (nunca en cada tecla) y con
+  // countrycodes=ar para acotar resultados ambiguos.
+  async function geocodeAddress(query) {
+    var url = "https://nominatim.openstreetmap.org/search?format=json&countrycodes=ar&limit=1&q=" + encodeURIComponent(query);
+    var resp = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!resp.ok) throw new Error("Error al consultar el geocodificador (" + resp.status + ")");
+    var results = await resp.json();
+    if (!results.length) throw new Error("No se encontró esa dirección.");
+    return { lat: parseFloat(results[0].lat), lon: parseFloat(results[0].lon), label: results[0].display_name };
+  }
+
+  function wireGeocodeButton(btnId, inputId, onResult) {
+    var btn = document.getElementById(btnId);
+    var originalText = btn.textContent;
+    btn.addEventListener("click", async function () {
+      var query = document.getElementById(inputId).value.trim();
+      if (!query) { alert("Escribí una dirección primero."); return; }
+      btn.disabled = true;
+      btn.textContent = "Buscando...";
+      try {
+        onResult(await geocodeAddress(query));
+      } catch (err) {
+        alert("No se pudo ubicar: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    });
+  }
+
   // ==================== LINEAS (ABM, dibujadas sobre mapa) ====================
   // El terminal2 y ruta_ida/ruta_vuelta se cargan haciendo click en el
   // mapa, no grabando un viaje real: un viaje real confunde una parada
@@ -206,6 +238,84 @@
     });
   }
 
+  wireGeocodeButton("linea-t1-geocode-btn", "linea-t1-direccion", function (r) {
+    lineaState.terminal1 = { lat: r.lat, lon: r.lon };
+    redrawLineaMap();
+    lineaMap.setView([r.lat, r.lon], 16);
+  });
+  wireGeocodeButton("linea-t2-geocode-btn", "linea-t2-direccion", function (r) {
+    lineaState.terminal2 = { lat: r.lat, lon: r.lon };
+    redrawLineaMap();
+    lineaMap.setView([r.lat, r.lon], 16);
+  });
+
+  // ==================== IMPORTAR KML ====================
+  // Busca Placemark en cualquier nivel (soporta Folders anidados, que es
+  // como Google My Maps organiza las capas). Point -> terminal, en el
+  // orden en que aparecen en el archivo; LineString -> ruta_ida/vuelta,
+  // mismo criterio. No soporta KMZ (KML comprimido en zip).
+  function parseKML(xmlText) {
+    var doc = new DOMParser().parseFromString(xmlText, "text/xml");
+    if (doc.querySelector("parsererror")) throw new Error("El archivo no es un KML válido.");
+
+    var points = [];
+    var lines = [];
+    doc.querySelectorAll("Placemark").forEach(function (pm) {
+      var nameEl = pm.querySelector("name");
+      var nombre = nameEl ? nameEl.textContent.trim() : "";
+
+      var point = pm.querySelector("Point > coordinates");
+      if (point) {
+        var pp = point.textContent.trim().split(",");
+        points.push({ lat: parseFloat(pp[1]), lon: parseFloat(pp[0]), nombre: nombre });
+      }
+
+      var line = pm.querySelector("LineString > coordinates");
+      if (line) {
+        var coords = line.textContent.trim().split(/\s+/).map(function (par) {
+          var pp2 = par.split(",");
+          return [parseFloat(pp2[1]), parseFloat(pp2[0])];
+        });
+        lines.push(coords);
+      }
+    });
+    return { points: points, lines: lines };
+  }
+
+  document.getElementById("linea-kml-input").addEventListener("change", async function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    try {
+      var parsed = parseKML(await file.text());
+      if (parsed.points.length === 0 && parsed.lines.length === 0) {
+        throw new Error("No se encontraron puntos ni líneas en el archivo.");
+      }
+      if (parsed.points[0]) {
+        lineaState.terminal1 = { lat: parsed.points[0].lat, lon: parsed.points[0].lon };
+        if (parsed.points[0].nombre) document.getElementById("linea-t1-nombre").value = parsed.points[0].nombre;
+      }
+      if (parsed.points[1]) {
+        lineaState.terminal2 = { lat: parsed.points[1].lat, lon: parsed.points[1].lon };
+        if (parsed.points[1].nombre) document.getElementById("linea-t2-nombre").value = parsed.points[1].nombre;
+      }
+      if (parsed.lines[0]) lineaState.rutaIda = parsed.lines[0];
+      if (parsed.lines[1]) lineaState.rutaVuelta = parsed.lines[1];
+
+      redrawLineaMap();
+      var bounds = [];
+      if (lineaState.terminal1) bounds.push([lineaState.terminal1.lat, lineaState.terminal1.lon]);
+      if (lineaState.terminal2) bounds.push([lineaState.terminal2.lat, lineaState.terminal2.lon]);
+      bounds = bounds.concat(lineaState.rutaIda, lineaState.rutaVuelta);
+      if (bounds.length) lineaMap.fitBounds(bounds, { padding: [20, 20] });
+
+      setLineaAlert("ok", "KML importado: " + parsed.points.length + " punto(s), " + parsed.lines.length + " línea(s). Revisá el mapa antes de guardar.");
+    } catch (err) {
+      setLineaAlert("error", "No se pudo importar el KML: " + err.message);
+    } finally {
+      e.target.value = "";
+    }
+  });
+
   lineaCancelBtn.addEventListener("click", limpiarFormLinea);
 
   lineaForm.addEventListener("submit", async (e) => {
@@ -324,6 +434,11 @@
       });
     });
   }
+
+  wireGeocodeButton("parada-geocode-btn", "parada-direccion", function (r) {
+    document.getElementById("parada-lat").value = r.lat.toFixed(6);
+    document.getElementById("parada-lon").value = r.lon.toFixed(6);
+  });
 
   paradaCancelBtn.addEventListener("click", limpiarFormParada);
 

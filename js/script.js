@@ -6,11 +6,33 @@ var header = document.getElementById('site-header');
 
   var hamburger = document.getElementById('hamburger');
   var nav = document.getElementById('main-nav');
+  var backdrop = document.getElementById('nav-backdrop');
+
+  function openNav(){
+    nav.classList.add('open');
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Cerrar menú');
+    backdrop.classList.add('visible');
+    document.body.classList.add('nav-locked');
+  }
+  function closeNav(){
+    nav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Abrir menú');
+    backdrop.classList.remove('visible');
+    document.body.classList.remove('nav-locked');
+  }
   hamburger.addEventListener('click', function(){
-    nav.classList.toggle('open');
+    if (nav.classList.contains('open')) closeNav(); else openNav();
+  });
+  backdrop.addEventListener('click', closeNav);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeNav();
   });
   nav.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', function(){ nav.classList.remove('open'); });
+    a.addEventListener('click', closeNav);
   });
 
   var revealEls = document.querySelectorAll('.reveal');

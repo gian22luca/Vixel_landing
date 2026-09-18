@@ -38,6 +38,10 @@ table.gestion-table tbody tr:hover { background: #FAFBFF; }
   table.gestion-table { display: block; overflow-x: auto; white-space: nowrap; }
 }
 
+.geocode-row{background:var(--lightbg);border-radius:8px;padding:12px 14px;margin-bottom:14px;}
+.geocode-row .btn-cancel{white-space:nowrap;}
+label.linea-map-btn{display:inline-flex;align-items:center;}
+
 /* Mapa de Lineas */
 .linea-map-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
 .linea-mode-btn, .linea-map-btn {

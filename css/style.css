@@ -64,8 +64,22 @@
   nav.main-nav a:hover{opacity:1;color:var(--cyan);}
   .header-actions{display:flex;align-items:center;gap:22px;}
   .header-actions .btn{padding:11px 22px;font-size:14px;}
-  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;}
-  .hamburger span{width:24px;height:2px;background:var(--white);border-radius:2px;}
+  .nav-mobile-actions{display:none;}
+  .hamburger{
+    display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;
+    position:relative;z-index:1001;
+  }
+  .hamburger span{width:24px;height:2px;background:var(--white);border-radius:2px;transition:transform .25s ease,opacity .25s ease;}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  .nav-backdrop{
+    position:fixed;inset:0;background:rgba(6,12,28,.55);z-index:998;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+  }
+  .nav-backdrop.visible{opacity:1;pointer-events:auto;}
+  body.nav-locked{overflow:hidden;}
 
   /* ---------- HERO ---------- */
   .hero{
@@ -225,12 +239,15 @@
   @media (max-width:900px){
     section{padding:70px 0;}
     nav.main-nav{
-      position:fixed;top:0;right:0;height:100vh;width:78%;max-width:320px;
+      position:fixed;top:0;right:0;height:100vh;width:78%;max-width:320px;z-index:999;
       background:var(--navy2);flex-direction:column;justify-content:center;align-items:flex-start;
       padding:40px;gap:26px;transform:translateX(100%);transition:transform .3s ease;
+      overflow-y:auto;
     }
     nav.main-nav.open{transform:translateX(0);}
     nav.main-nav a{font-size:17px;}
+    .nav-mobile-actions{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:10px;width:100%;}
+    .nav-mobile-actions .btn{width:100%;text-align:center;}
     .header-actions .btn-outline{display:none;}
     .hamburger{display:flex;}
     .nosotros-grid,.serv-grid{grid-template-columns:1fr;}
