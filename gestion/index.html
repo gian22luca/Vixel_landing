@@ -47,6 +47,13 @@
         <div class="field"><label>Activa</label><input type="checkbox" id="linea-activa" checked style="width:auto;margin-top:11px;"></div>
       </div>
 
+      <div class="gestion-form-row geocode-row">
+        <div class="field" style="flex:2;"><label>Terminal 1 por dirección (opcional)</label><input type="text" id="linea-t1-direccion" placeholder="Ej: Av. Rivadavia 5000, CABA"></div>
+        <div class="field field-btns" style="flex:0.8;"><button type="button" class="linea-map-btn" id="linea-t1-geocode-btn">📍 Ubicar</button></div>
+        <div class="field" style="flex:2;"><label>Terminal 2 por dirección (opcional)</label><input type="text" id="linea-t2-direccion" placeholder="Ej: Av. Rivadavia 5000, CABA"></div>
+        <div class="field field-btns" style="flex:0.8;"><button type="button" class="linea-map-btn" id="linea-t2-geocode-btn">📍 Ubicar</button></div>
+      </div>
+
       <div class="linea-map-tools">
         <button type="button" class="linea-mode-btn" data-mode="terminal1">📍 Marcar Terminal 1</button>
         <button type="button" class="linea-mode-btn" data-mode="terminal2">📍 Marcar Terminal 2</button>
@@ -54,8 +61,11 @@
         <button type="button" class="linea-mode-btn" data-mode="vuelta">🔵 Dibujar recorrido VUELTA</button>
         <button type="button" class="linea-map-btn" id="linea-undo-btn">↩ Deshacer último punto</button>
         <button type="button" class="linea-map-btn" id="linea-clear-btn">🗑 Limpiar recorrido activo</button>
+        <label class="linea-map-btn" for="linea-kml-input">📂 Importar KML</label>
+        <input type="file" id="linea-kml-input" accept=".kml" hidden>
       </div>
       <p class="linea-map-hint" id="linea-map-hint">Elegí qué marcar y hacé click en el mapa.</p>
+      <p class="linea-map-hint">El KML debe traer puntos (Placemark + Point) para las terminales y líneas (Placemark + LineString) para el recorrido — se importan como referencia y quedan igual de editables que si los hubieras dibujado a mano.</p>
       <div id="linea-map"></div>
 
       <div class="gestion-form-row" style="margin-top:12px;">
@@ -80,6 +90,10 @@
 
     <form id="parada-form" class="gestion-form">
       <input type="hidden" id="parada-id">
+      <div class="gestion-form-row geocode-row">
+        <div class="field" style="flex:3;"><label>Buscar por dirección (opcional)</label><input type="text" id="parada-direccion" placeholder="Ej: Av. Rivadavia 5000, CABA"></div>
+        <div class="field field-btns" style="flex:1;"><button type="button" class="btn-cancel" id="parada-geocode-btn">📍 Buscar</button></div>
+      </div>
       <div class="gestion-form-row">
         <div class="field"><label>Orden</label><input type="number" id="parada-orden" min="1" required></div>
         <div class="field" style="flex:2;"><label>Nombre</label><input type="text" id="parada-nombre" maxlength="100" required></div>
