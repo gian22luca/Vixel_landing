@@ -139,15 +139,15 @@ export default function Audiencia() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-8">
                   <div>
                     <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-dim">Escenario</p>
-                    <div className="mt-3 flex rounded-full p-1 shadow-[inset_0_0_0_1px_var(--hair)]">
+                    <div className="mt-3 flex gap-1 rounded-full p-1.5 shadow-[inset_0_0_0_1px_var(--hair)]">
                       {(["conservador", "base", "optimista"] as Esc[]).map((e) => (
                         <button
                           key={e}
                           onClick={() => setEsc(e)}
-                          className={clsx("flex-1 rounded-full py-1.5 text-[12px] capitalize transition-colors duration-300", esc === e ? "bg-ink text-bg" : "text-ink-dim")}
+                          className={clsx("flex-1 whitespace-nowrap rounded-full px-4 py-2.5 text-[13px] capitalize transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan", esc === e ? "bg-ink text-bg" : "text-ink-dim hover:text-ink")}
                         >
                           {e}
                         </button>
@@ -161,7 +161,7 @@ export default function Audiencia() {
                       <select
                         value={perm}
                         onChange={(e) => setPerm(+e.target.value)}
-                        className="mt-3 w-full rounded-full bg-white/[0.03] px-4 py-2 text-[13px] shadow-[inset_0_0_0_1px_var(--hair)] focus:outline-none"
+                        className="mt-3 w-full rounded-full bg-white/[0.03] px-5 py-3 text-[13px] shadow-[inset_0_0_0_1px_var(--hair)] focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan"
                       >
                         {PERMANENCIA.map((p, i) => (
                           <option key={p.m} value={i} className="bg-bg">

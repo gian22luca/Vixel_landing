@@ -28,8 +28,41 @@ export default function Franjas() {
         <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-12">
           <Reveal className="lg:col-span-8">
             <div className="bezel">
-              <div className="bezel-core overflow-x-auto p-5 md:p-8">
-                <div className="min-w-[560px]">
+              <div className="bezel-core p-4 md:p-8">
+                {/* mobile: una fila por franja, sin scroll lateral */}
+                <div className="space-y-2 md:hidden">
+                  <div className="grid grid-cols-[1fr_repeat(3,64px)] gap-1.5 px-1 font-mono text-[9px] uppercase tracking-[0.12em] text-ink-mute">
+                    <span />
+                    <span className="text-center">L–V</span>
+                    <span className="text-center">Sáb</span>
+                    <span className="text-center">Dom</span>
+                  </div>
+                  {FRANJAS.map((fr, c) => (
+                    <button
+                      key={fr.id}
+                      onClick={() => setSel(c)}
+                      className={clsx(
+                        "grid w-full grid-cols-[1fr_repeat(3,64px)] items-center gap-1.5 rounded-2xl p-1.5 text-left transition-colors duration-500",
+                        sel === c ? "bg-white/[0.07] ring-1 ring-cyan/60" : "bg-white/[0.02]",
+                      )}
+                    >
+                      <span className="pl-2">
+                        <span className="block text-[14px] font-medium leading-tight">{fr.name}</span>
+                        <span className="font-mono text-[10px] text-ink-mute">{fr.hours} h</span>
+                      </span>
+                      {fr.idx.map((v, r) => (
+                        <span
+                          key={r}
+                          className="flex h-14 items-center justify-center rounded-xl font-led text-[19px] font-black"
+                          style={{ background: color(v) }}
+                        >
+                          {v.toFixed(2).replace(".", ",")}
+                        </span>
+                      ))}
+                    </button>
+                  ))}
+                </div>
+                <div className="hidden md:block">
                   <div className="grid grid-cols-[110px_repeat(4,1fr)] gap-2">
                     <span />
                     {FRANJAS.map((fr, i) => (
@@ -100,17 +133,17 @@ export default function Franjas() {
                   </p>
                 </div>
                 <dl className="space-y-4">
-                  <div className="flex justify-between border-b border-hair pb-3">
+                  <div className="flex justify-between gap-4 border-b border-hair pb-3">
                     <dt className="text-ink-dim">Apariciones / mes</dt>
                     <dd className="font-medium">{fmt(f.apar)}</dd>
                   </div>
                   {SHOW_PRICES && (
-                    <div className="flex justify-between border-b border-hair pb-3">
+                    <div className="flex justify-between gap-4 border-b border-hair pb-3">
                       <dt className="text-ink-dim">Precio por pantalla / mes</dt>
                       <dd className="font-medium">{money(f.price)}</dd>
                     </div>
                   )}
-                  <div className="flex justify-between">
+                  <div className="flex justify-between gap-4">
                     <dt className="text-ink-dim">Ideal para</dt>
                     <dd className="text-right font-medium">
                       {{ morning: "Bancos, educación", midday: "Shoppings, salud", evening: "Gastronomía, retail", night: "Entretenimiento" }[f.id]}

@@ -87,8 +87,28 @@ export default function Planes() {
         {/* comparativa */}
         <Reveal className="mt-24">
           <div className="bezel">
-            <div className="bezel-core overflow-x-auto p-2 md:p-4">
-              <table className="w-full min-w-[820px] border-separate border-spacing-0 text-left text-[14px]">
+            <div className="bezel-core p-2 md:p-4">
+              {/* mobile: una tarjeta por atributo, sin scroll lateral */}
+              <div className="divide-y divide-hair md:hidden">
+                {COMPARE.rows.map((r) => (
+                  <div key={r.a} className="p-4">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-mute">{r.a}</p>
+                    <div className="mt-3 flex items-baseline justify-between gap-4 rounded-xl bg-cyan/10 px-4 py-3 ring-1 ring-cyan/30">
+                      <span className="text-[13px] text-cyan">Vixel</span>
+                      <span className="text-right text-[15px] font-medium">{r.v[0]}</span>
+                    </div>
+                    <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 px-1">
+                      {r.v.slice(1).map((v, i) => (
+                        <div key={i}>
+                          <dt className="text-[11px] leading-tight text-ink-mute">{COMPARE.cols[i + 1]}</dt>
+                          <dd className="text-[13.5px] text-ink-dim">{v}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                ))}
+              </div>
+              <table className="hidden w-full border-separate border-spacing-0 text-left text-[14px] md:table">
                 <thead>
                   <tr>
                     <th className="p-4 font-mono text-[10.5px] font-normal uppercase tracking-[0.16em] text-ink-mute">Atributo</th>
