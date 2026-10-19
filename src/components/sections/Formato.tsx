@@ -97,7 +97,7 @@ export default function Formato() {
             {[
               { src: "/img/luneta-epifania.jpg", cap: "En calle · Buenos Aires" },
               { src: "/img/luneta-dia.jpg", cap: "Nocturno · 5.500 nits" },
-              { src: "/img/bus-street.jpg", cap: "Luneta trasera · tránsito real", wide: true },
+              { src: "/img/luneta-tomoki-wide.jpg", cap: "Luneta Vixel · en servicio", wide: true },
             ].map((p, i) => (
               <Reveal key={p.src} delay={i * 0.1} className={p.wide ? "col-span-2" : ""}>
                 <figure className="bezel">

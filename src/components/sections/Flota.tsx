@@ -40,6 +40,7 @@ export default function Flota() {
                       alt={p.title}
                       fill
                       sizes="(min-width:1024px) 25vw, 50vw"
+                      style={"pos" in p ? { objectPosition: p.pos } : undefined}
                       className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
                     />
                   </div>

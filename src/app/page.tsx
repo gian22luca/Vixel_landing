@@ -31,7 +31,7 @@ export default function Home() {
         <Audiencia />
         <Franjas />
         <Tecnologia />
-        <CityBreak img="/img/bus-street-2.jpg" kicker="Ya circulando en Buenos Aires" top="Tu marca" bottom="en movimiento." />
+        <CityBreak img="/img/luneta-real-12.jpg" kicker="Ya circulando en Buenos Aires" top="Tu marca" bottom="en movimiento." />
         <Planes />
         <Soluciones />
         <Flota />

@@ -101,7 +101,7 @@ export default function Tecnologia() {
           <Reveal delay={0.06} className="md:col-span-3">
             <div className="bezel h-full">
               <div className="bezel-core relative h-full min-h-[280px]">
-                <Image src="/img/bus-night.jpg" alt="Colectivo con pantalla LED trasera de noche" fill sizes="50vw" className="object-cover" />
+                <Image src="/img/luneta-real.jpg" alt="Colectivo con pantalla LED Vixel en la luneta trasera" fill sizes="50vw" className="object-cover object-[center_32%]" />
                 <div className="absolute inset-0 bg-black/55" />
                 <div className="absolute bottom-0 p-7">
                   <p className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-cyan">Hardware</p>

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: "Publicidad digital en movimiento: pantallas LED en colectivos de CABA.",
     locale: "es_AR",
     type: "website",
-    images: ["/img/bus-night.jpg"],
+    images: ["/img/luneta-real.jpg"],
   },
 };
 

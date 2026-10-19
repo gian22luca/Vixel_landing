@@ -173,7 +173,8 @@ export const FLEET_PRODUCTS = [
     title: "Ramalera",
     text: "Refuerza el destino en la parada desde el parabrisas. Mismo estándar LED full color.",
     spec: "128×32 px · 68×20×4 cm",
-    img: "/img/ramalera.jpg",
+    img: "/img/ramalera-102.jpg",
+    pos: "center 62%",
   },
   {
     n: "03",
