@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import clsx from "clsx";
@@ -57,6 +58,12 @@ export default function Nav() {
             ))}
           </ul>
           <div className="flex items-center gap-2">
+            <Link
+              href="/login"
+              className="rounded-full px-3.5 py-2 text-[13.5px] text-ink-dim transition-colors duration-300 hover:bg-white/[0.06] hover:text-ink lg:ml-2"
+            >
+              Ingresar
+            </Link>
             <a
               href={waLink()}
               target="_blank"
@@ -117,6 +124,9 @@ export default function Nav() {
                 </li>
               ))}
             </ul>
+            <Link href="/login" onClick={() => setOpen(false)} className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-ink-dim">
+              Ingresar al panel
+            </Link>
             <motion.a
               href={waLink()}
               target="_blank"

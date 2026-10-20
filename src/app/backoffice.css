@@ -1,0 +1,153 @@
+/* Backoffice (login, panel, gestión, configuración). Mismos tokens que la web:
+   fondo #232323, tarjetas #2b2b2b, acento cian sólido, sin degradados. */
+
+.bo-card {
+  border-radius: 1.25rem;
+  background: #2b2b2b;
+  box-shadow: inset 0 0 0 1px var(--hair);
+  padding: 1.5rem;
+}
+@media (max-width: 640px) {
+  .bo-card { padding: 1.1rem; border-radius: 1rem; }
+}
+.bo-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.bo-sub {
+  margin-top: 0.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+
+.bo-field { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 0.4rem; }
+.bo-field > label,
+.bo-label {
+  font-family: var(--font-geist-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.bo-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--hair-2);
+  padding: 0.7rem 0.9rem;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  transition: box-shadow 0.25s var(--ease-out);
+}
+.bo-input:focus { box-shadow: inset 0 0 0 1px var(--cyan); }
+select.bo-input { appearance: none; padding-right: 2.2rem; background-image: none; }
+
+.bo-row { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: flex-end; }
+.bo-row + .bo-row { margin-top: 0.9rem; }
+@media (max-width: 640px) {
+  .bo-row { flex-direction: column; align-items: stretch; }
+}
+
+.bo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: transform 0.4s var(--ease-spring), background 0.25s, box-shadow 0.25s, color 0.25s;
+}
+.bo-btn:active:not(:disabled) { transform: scale(0.97); }
+.bo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.bo-btn-primary { background: var(--ink); color: var(--bg); }
+.bo-btn-primary:hover:not(:disabled) { background: #fff; }
+.bo-btn-ghost { background: rgba(255, 255, 255, 0.04); color: var(--ink); box-shadow: inset 0 0 0 1px var(--hair-2); }
+.bo-btn-ghost:hover:not(:disabled) { box-shadow: inset 0 0 0 1px rgba(46, 230, 245, 0.5); }
+.bo-btn-ghost.is-active { background: var(--cyan); color: #00121a; box-shadow: none; }
+.bo-btn-sm { padding: 0.45rem 0.95rem; font-size: 13px; }
+.bo-btn-danger { color: #ff7a7a; }
+
+.bo-alert {
+  border-radius: 0.75rem;
+  padding: 0.8rem 1rem;
+  font-size: 14px;
+  box-shadow: inset 0 0 0 1px var(--hair-2);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-dim);
+}
+.bo-alert.ok { color: var(--mint); box-shadow: inset 0 0 0 1px rgba(60, 255, 200, 0.35); }
+.bo-alert.error { color: #ff8a8a; box-shadow: inset 0 0 0 1px rgba(255, 110, 110, 0.4); }
+
+/* Tablas: en desktop tabla normal; en mobile cada fila es una tarjeta apilada
+   con la etiqueta de la columna al lado del valor (nada de scroll lateral). */
+.bo-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.bo-table th {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  font-family: var(--font-geist-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border-bottom: 1px solid var(--hair);
+}
+.bo-table td { padding: 0.7rem 0.75rem; border-bottom: 1px solid var(--hair); color: var(--ink); vertical-align: middle; }
+.bo-table td.bo-actions { text-align: right; white-space: nowrap; }
+.bo-table td.bo-empty { text-align: center; color: var(--ink-mute); padding: 1.5rem; }
+.bo-table .num { font-family: var(--font-geist-mono); font-size: 13px; color: var(--ink-dim); }
+@media (max-width: 760px) {
+  .bo-table thead { display: none; }
+  .bo-table, .bo-table tbody, .bo-table tr, .bo-table td { display: block; width: 100%; }
+  .bo-table tr {
+    margin-bottom: 0.7rem;
+    border-radius: 0.9rem;
+    background: var(--bg);
+    box-shadow: inset 0 0 0 1px var(--hair);
+    padding: 0.4rem 0.9rem;
+  }
+  .bo-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--hair);
+    padding: 0.55rem 0;
+    text-align: right;
+  }
+  .bo-table td:last-child { border-bottom: 0; }
+  .bo-table td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    text-align: left;
+    font-family: var(--font-geist-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-top: 2px;
+  }
+  .bo-table td.bo-actions { justify-content: flex-end; gap: 0.5rem; }
+  .bo-table td.bo-actions::before, .bo-table td.bo-empty::before { content: none; }
+  .bo-table td.bo-empty { justify-content: center; }
+}
+
+/* Leaflet en tono oscuro: se invierten solo los tiles; recorridos y markers
+   quedan con sus colores reales. */
+.bo-map { border-radius: 1rem; overflow: hidden; box-shadow: inset 0 0 0 1px var(--hair); background: #1b1b1b; isolation: isolate; }
+.bo-map .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6); }
+.bo-map .leaflet-container { background: #1b1b1b; font-family: var(--font-geist), system-ui, sans-serif; }
+.bo-map .leaflet-control-attribution { background: rgba(35, 35, 35, 0.8); color: var(--ink-mute); }
+.bo-map .leaflet-control-attribution a { color: var(--ink-dim); }
+.bo-map .leaflet-bar a { background: #2b2b2b; color: var(--ink); border-color: var(--hair); }
+.bo-map .leaflet-popup-content-wrapper, .bo-map .leaflet-popup-tip { background: #2b2b2b; color: var(--ink); }
+.bo-map .leaflet-div-icon, .bo-map .bo-marker { background: transparent; border: 0; }
+
+.bo-check { width: 1.1rem; height: 1.1rem; accent-color: var(--cyan); }
+.bo-range { width: 100%; accent-color: var(--cyan); }
